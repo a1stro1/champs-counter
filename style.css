@@ -1,0 +1,51 @@
+/* General body styling */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  background-color: #f4f4f4;
+}
+
+/* Like button container */
+.like-container {
+  text-align: center;
+}
+
+/* Style for the Like button */
+.like-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.like-button .like-icon {
+  margin-right: 10px;
+}
+
+/* Liked button style */
+.like-button.liked {
+  background-color: black;
+  color: white;
+}
+
+/* Footer styling */
+footer {
+  margin-top: 30px;
+  font-size: 14px;
+  text-align: center;
+  color: #555;
+}
+
+/* Like count styling */
+#like-count {
+  font-weight: bold;
+}

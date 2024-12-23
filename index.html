@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League of Legends Counters</title>
+    <title>Made By Abdo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #search-container {
+            margin: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+            max-width: 400px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #5c9ded;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #recommendations {
+            margin: 10px auto;
+            width: 60%;
+            max-width: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            color: #555;
+            font-size: 14px;
+            max-height: 150px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        #counters {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        .champion {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+
+        .champion img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Like Button</title>
+  <link rel="stylesheet" href="style.css">  <!-- Link to external CSS file -->
+</head>
+<body>
+  <!-- Like Button Container -->
+  <div class="like-container">
+    <button class="like-button" id="like-button">
+      <span class="like-icon">👍</span> Like
+    </button>
+    <p>Likes: <span id="like-count">0</span></p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Made by Abdo</p>
+  </footer>
+
+  <!-- Link to External JavaScript File -->
+  <script src="script.js"></script> <!-- Link to external JavaScript file -->
+</body>
+</html>
+
+<body>
+    <h1>League of Legends Champion Counters</h1>
+    <div id="search-container">
+        <input type="text" id="champion-input" placeholder="Enter champion name or shortcut..."
+            onkeyup="showRecommendations()">
+        <button onclick="getCounters()">Search</button>
+    </div>
+    <div id="recommendations">
+        <!-- Recommendations will appear here -->
+    </div>
+    <div id="counters">
+        <p>Type a champion's name to see their counters.</p>
+    </div>
+
+    <script>
+        // Example recommendations logic
+        function showRecommendations() {
+            const input = document.getElementById('champion-input').value.toLowerCase();
+            const recommendationsDiv = document.getElementById('recommendations');
+            recommendationsDiv.innerHTML = ''; // Clear previous recommendations
+
+            if (input.length > 0) {
+                const matchedChampions = allChampions.filter(champ =>
+                    champ.name.toLowerCase().includes(input) ||
+                    champ.shortcuts.some(shortcut => shortcut.toLowerCase().includes(input))
+                );
+
+                if (matchedChampions.length > 0) {
+                    matchedChampions.forEach(champion => {
+                        const championDiv = document.createElement('div');
+                        championDiv.textContent = champion.name;
+                        championDiv.style.cursor = 'pointer';
+                        championDiv.onclick = () => {
+                            document.getElementById('champion-input').value = champion.name;
+                            recommendationsDiv.innerHTML = ''; // Clear recommendations
+                            getCounters();
+                        };
+                        recommendationsDiv.appendChild(championDiv);
+                    });
+                } else {
+                    recommendationsDiv.innerHTML = '<p>No matches found.</p>';
+                }
+            }
+        }
+
+        function getCounters() {
+            const input = document.getElementById('champion-input').value.toLowerCase();
+            const countersDiv = document.getElementById('counters');
+            countersDiv.innerHTML = ''; // Clear previous counters
+
+            const champion = allChampions.find(champ =>
+                champ.name.toLowerCase() === input ||
+                champ.shortcuts.some(shortcut => shortcut.toLowerCase() === input)
+            );
+
+            if (champion && countersData[champion.name]) {
+                const countersInfo = countersData[champion.name];
+                for (const [role, counters] of Object.entries(countersInfo.roles)) {
+                    const roleDiv = document.createElement('div');
+                    roleDiv.innerHTML = `<strong>${role}:</strong> ${counters.join(', ')}`;
+                    countersDiv.appendChild(roleDiv);
+                }
+            } else {
+                countersDiv.innerHTML = '<p>No counters found. Try another champion.</p>';
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+<script>
+    // All champions and their shortcuts
+    const allChampions = [
+        { name: "Ahri", shortcuts: ["Ahri"] },
+        { name: "Aurora", shortcuts: ["Aurora", "Aur"] },
+        { name: "Yasuo", shortcuts: ["Yasuo"] },
+        { name: "Master Yi", shortcuts: ["Yi", "Master Yi"] },
+        { name: "Miss Fortune", shortcuts: ["MF", "Miss Fortune"] },
+        { name: "Aatrox", shortcuts: ["Aatrox", "Atrx"] },
+        { name: "Akali", shortcuts: ["Akali", "Aka"] },
+        { name: "Akshan", shortcuts: ["Akshan", "Aksh"] },
+        { name: "Alistar", shortcuts: ["Alistar", "Ali"] },
+        { name: "Amumu", shortcuts: ["Amumu", "Amu"] },
+        { name: "Anivia", shortcuts: ["Anivia", "Ani"] },
+        { name: "Annie", shortcuts: ["Annie", "Ann"] },
+        { name: "Aphelios", shortcuts: ["Aphelios", "Aph"] },
+        { name: "Ashe", shortcuts: ["Ashe", "Ash"] },
+        { name: "Aurelion Sol", shortcuts: ["Aurelion Sol", "ASol"] },
+        { name: "Azir", shortcuts: ["Azir", "Azi"] },
+        { name: "Bard", shortcuts: ["Bard", "Brd"] },
+        { name: "Blitzcrank", shortcuts: ["Blitzcrank", "Blitz"] },
+        { name: "Brand", shortcuts: ["Brand", "Brd"] },
+        { name: "Braum", shortcuts: ["Braum", "Brau"] },
+        { name: "Caitlyn", shortcuts: ["Caitlyn", "Cait"] },
+        { name: "Camille", shortcuts: ["Camille", "Cam"] },
+        { name: "Cassiopeia", shortcuts: ["Cassiopeia", "Cass"] },
+        { name: "Cho'Gath", shortcuts: ["Cho'Gath", "Cho"] },
+        { name: "Darius", shortcuts: ["Darius", "Dar"] },
+        { name: "Diana", shortcuts: ["Diana", "Dia"] },
+        { name: "Dr. Mundo", shortcuts: ["Dr. Mundo", "Mundo"] },
+        { name: "Draven", shortcuts: ["Draven", "Drav"] },
+        { name: "Ekko", shortcuts: ["Ekko", "Ek"] },
+        { name: "Elise", shortcuts: ["Elise", "Eli"] },
+        { name: "Evelynn", shortcuts: ["Evelynn", "Eve"] },
+        { name: "Ezreal", shortcuts: ["Ezreal", "Ez"] },
+        { name: "Fiddlesticks", shortcuts: ["Fiddlesticks", "Fid"] },
+        { name: "Fiora", shortcuts: ["Fiora", "Fio"] },
+        { name: "Fizz", shortcuts: ["Fizz", "Fiz"] },
+        { name: "Galio", shortcuts: ["Galio", "Gal"] },
+        { name: "Gangplank", shortcuts: ["Gangplank", "GP"] },
+        { name: "Garen", shortcuts: ["Garen", "Gar"] },
+        { name: "Gnar", shortcuts: ["Gnar", "Gnr"] },
+        { name: "Gragas", shortcuts: ["Gragas", "Grag"] },
+        { name: "Graves", shortcuts: ["Graves", "Grvs"] },
+        { name: "Hecarim", shortcuts: ["Hecarim", "Heca"] },
+        { name: "Heimerdinger", shortcuts: ["Heimerdinger", "Heim"] },
+        { name: "Illaoi", shortcuts: ["Illaoi", "Illa"] },
+        { name: "Irelia", shortcuts: ["Irelia", "Ire"] },
+        { name: "Ivern", shortcuts: ["Ivern", "Ivrn"] },
+        { name: "Janna", shortcuts: ["Janna", "Jan"] },
+        { name: "Jarvan IV", shortcuts: ["Jarvan IV", "J4"] },
+        { name: "Jax", shortcuts: ["Jax", "Jax"] },
+        { name: "Jayce", shortcuts: ["Jayce", "Jay"] },
+        { name: "Jhin", shortcuts: ["Jhin", "Jhn"] },
+        { name: "Jinx", shortcuts: ["Jinx", "Jx"] },
+        { name: "Kai'Sa", shortcuts: ["Kai'Sa", "Kai"] },
+        { name: "Kalista", shortcuts: ["Kalista", "Kali"] },
+        { name: "Karma", shortcuts: ["Karma", "Karm"] },
+        { name: "Karthus", shortcuts: ["Karthus", "Kar"] },
+        { name: "Kassadin", shortcuts: ["Kassadin", "Kass"] },
+        { name: "Katarina", shortcuts: ["Katarina", "Kat"] },
+        { name: "Kayle", shortcuts: ["Kayle", "Kayl"] },
+        { name: "Kayn", shortcuts: ["Kayn", "Kayn"] },
+        { name: "Kennen", shortcuts: ["Kennen", "Ken"] },
+        { name: "Kha'Zix", shortcuts: ["Kha'Zix", "KZ"] },
+        { name: "Kindred", shortcuts: ["Kindred", "Knd"] },
+        { name: "Kled", shortcuts: ["Kled", "Kled"] },
+        { name: "K'Sante", shortcuts: ["K'Sante", "KS"] },
+        { name: "LeBlanc", shortcuts: ["LeBlanc", "LB"] },
+        { name: "Lee Sin", shortcuts: ["Lee Sin", "LS"] },
+        { name: "Leona", shortcuts: ["Leona", "Leo"] },
+        { name: "Lillia", shortcuts: ["Lillia", "Lil"] },
+        { name: "Lissandra", shortcuts: ["Lissandra", "Liss"] },
+        { name: "Lucian", shortcuts: ["Lucian", "Luc"] },
+        { name: "Lulu", shortcuts: ["Lulu", "Lulu"] },
+        { name: "Lux", shortcuts: ["Lux", "Lux"] },
+        { name: "Malphite", shortcuts: ["Malphite", "Malph"] },
+        { name: "Malzahar", shortcuts: ["Malzahar", "Malz"] },
+        { name: "Maokai", shortcuts: ["Maokai", "Mao"] },
+        { name: "Master Yi", shortcuts: ["Master Yi", "Yi"] },
+        { name: "Milio", shortcuts: ["Milio", "Mil"] },
+        { name: "Miss Fortune", shortcuts: ["Miss Fortune", "MF"] },
+        { name: "Mordekaiser", shortcuts: ["Mordekaiser", "Morde"] },
+        { name: "Morgana", shortcuts: ["Morgana", "Morg"] },
+        { name: "Nunu and Willump", shortcuts: ["nunu and willump", "nunu"] },
+        { name: "Nami", shortcuts: ["Nami", "Nam"] },
+        { name: "Nasus", shortcuts: ["Nasus", "Nas"] },
+        { name: "Nautilus", shortcuts: ["Nautilus", "Naut"] },
+        { name: "Neeko", shortcuts: ["Neeko", "Neeko"] },
+        { name: "Nidalee", shortcuts: ["Nidalee", "Nid"] },
+        { name: "Nilah", shortcuts: ["Nilah", "Nil"] },
+        { name: "Nocturne", shortcuts: ["Nocturne", "Noc"] },
+        { name: "Olaf", shortcuts: ["Olaf", "Olaf"] },
+        { name: "Orianna", shortcuts: ["Orianna", "Ori"] },
+        { name: "Ornn", shortcuts: ["Ornn", "Orn"] },
+        { name: "Pantheon", shortcuts: ["Pantheon", "Pan"] },
+        { name: "Poppy", shortcuts: ["Poppy", "Pop"] },
+        { name: "Pyke", shortcuts: ["Pyke", "Pyk"] },
+        { name: "Qiyana", shortcuts: ["Qiyana", "Qiy"] },
+        { name: "Quinn", shortcuts: ["Quinn", "Qui"] },
+        { name: "Rakan", shortcuts: ["Rakan", "Rak"] },
+        { name: "Rammus", shortcuts: ["Rammus", "Ram"] },
+        { name: "Rek'Sai", shortcuts: ["Rek'Sai", "Rek"] },
+        { name: "Rell", shortcuts: ["Rell", "Rel"] },
+        { name: "Renekton", shortcuts: ["Renekton", "Ren"] },
+        { name: "Rengar", shortcuts: ["Rengar", "Reng"] },
+        { name: "Riven", shortcuts: ["Riven", "Riv"] },
+        { name: "Ryze", shortcuts: ["Ryze", "Ryz"] },
+        { name: "Samira", shortcuts: ["Samira", "Sam"] },
+        { name: "Sejuani", shortcuts: ["Sejuani", "Sej"] },
+        { name: "Senna", shortcuts: ["Senna", "Sen"] },
+        { name: "Seraphine", shortcuts: ["Seraphine", "Ser"] },
+        { name: "Shaco", shortcuts: ["Shaco", "Sha"] },
+        { name: "Shen", shortcuts: ["Shen", "Shen"] },
+        { name: "Sivir", shortcuts: ["Sivir", "Siv"] },
+        { name: "Smolder", shortcuts: ["Smolder", "Smol"] },
+        { name: "Sona", shortcuts: ["Sona", "Son"] },
+        { name: "Soraka", shortcuts: ["Soraka", "Sor"] },
+        { name: "Swain", shortcuts: ["Swain", "Swa"] },
+        { name: "Sylas", shortcuts: ["Sylas", "Syl"] },
+        { name: "Syndra", shortcuts: ["Syndra", "Syn"] },
+        { name: "Tahm Kench", shortcuts: ["Tahm Kench", "Tahm"] },
+        { name: "Taliyah", shortcuts: ["Taliyah", "Tal"] },
+        { name: "Taric", shortcuts: ["Taric", "Tar"] },
+        { name: "Teemo", shortcuts: ["Teemo", "Teem"] },
+        { name: "Thresh", shortcuts: ["Thresh", "Thr"] },
+        { name: "Tristana", shortcuts: ["Tristana", "Tri"] },
+        { name: "Trundle", shortcuts: ["Trundle", "Trun"] },
+        { name: "Tryndamere", shortcuts: ["Tryndamere", "Tryn"] },
+        { name: "Twisted Fate", shortcuts: ["Twisted Fate", "TF"] },
+        { name: "Twitch", shortcuts: ["Twitch", "Twit"] },
+        { name: "Udyr", shortcuts: ["Udyr", "Udy"] },
+        { name: "Varus", shortcuts: ["Varus", "Var"] },
+        { name: "Vayne", shortcuts: ["Vayne", "Vay"] },
+        { name: "Veigar", shortcuts: ["Veigar", "Veig"] },
+        { name: "Vel'Koz", shortcuts: ["Vel'Koz", "Vel"] },
+        { name: "Vi", shortcuts: ["Vi", "Vi"] },
+        { name: "Viego", shortcuts: ["Viego", "Vie"] },
+        { name: "Viktor", shortcuts: ["Viktor", "Vik"] },
+        { name: "Vladimir", shortcuts: ["Vladimir", "Vla"] },
+        { name: "Volibear", shortcuts: ["Volibear", "Vol"] },
+        { name: "Warwick", shortcuts: ["Warwick", "War"] },
+        { name: "Wukong", shortcuts: ["Wukong", "Wuk"] },
+        { name: "Xayah", shortcuts: ["Xayah", "Xay"] },
+        { name: "Yone", shortcuts: ["Yone", "Yon"] },
+        { name: "Zed", shortcuts: ["Zed", "Zed"] },
+        { name: "Zeri", shortcuts: ["Zeri", "Zer"] },
+        { name: "Ziggs", shortcuts: ["Ziggs", "Zig"] },
+        { name: "Zilean", shortcuts: ["Zilean", "Zil"] }
+    ];
+
+    // Counter data
+    const countersData = {
+        "Aurora": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Hwei": {
+            roles: {
+                "Top": ["Gnar", "Renekton", "Irelia"],
+            }
+        },
+        "Smolder": {
+            roles: {
+                "Mid": ["Warwick", "Kha'Zix", "Nidalee"],
+            }
+        },
+        "Ahri": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Yasuo": {
+            roles: {
+                "Mid": ["Malzahar", "Annie", "Lissandra"],
+                "Top": ["Teemo", "Kayle", "Gnar"],
+            }
+        },
+        "Maokai": {
+            roles: {
+                "Top": ["Mordekaiser", "Olaf", "Rumble"],
+                "Support": ["Taric", "Galio", "Neeko" , "Morgana"],
+            }
+        },
+        "Master Yi": {
+            roles: {
+                "Jungle": ["Jax", "Rammus", "Udyr"],
+            }
+        },
+        "Miss Fortune": {
+            roles: {
+                "Bot": ["Draven", "Jhin", "Lucian"],
+            }
+        },
+        "Zed": {
+            roles: {
+                "Mid": ["Fiora", "Lissandra", "Malzahar"],
+            }
+        },
+        "Talon": {
+            roles: {
+                "Mid": ["Lissandra", "Malzahar", "Zed"],
+            }
+        },
+        "Fizz": {
+            roles: {
+                "Mid": ["Lissandra", "Malzahar", "Zed"],
+            }
+        },
+        "Aatrox": {
+            roles: {
+                "Top": ["Teemo", "Quinn", "Nasus"],
+            }
+        },
+        "Akali": {
+            roles: {
+                "Top": ["Malphite", "Teemo", "Kennen"],
+                "Mid": ["Lissandra", "Malzahar", "Zed"],
+            }
+        },
+        "Akshan": {
+            roles: {
+                "Mid": ["Malzahar", "Annie", "Lissandra"],
+            }
+        },
+        "Alistar": {
+            roles: {
+                "Support": ["Bard", "Janna", "Lulu"],
+            }
+        },
+        "Amumu": {
+            roles: {
+                "Jungle": ["Warwick", "Kha'Zix", "Elise"],
+            }
+        },
+        "Anivia": {
+            roles: {
+                "Mid": ["Zed", "Fizz", "Talon"],
+            }
+        },
+        "Annie": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Aphelios": {
+            roles: {
+                "Bot": ["Draven", "Jhin", "Lucian"],
+            }
+        },
+        "Ashe": {
+            roles: {
+                "Bot": ["Draven", "Jhin", "Lucian"],
+            }
+        },
+        "Aurelion Sol": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Azir": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Bard": {
+            roles: {
+                "Support": ["Janna", "Lulu", "Nami"],
+            }
+        },
+        "Blitzcrank": {
+            roles: {
+                "Support": ["Janna", "Nami", "Lulu"],
+            }
+        },
+        "Brand": {
+            roles: {
+                "Support": ["Janna", "Lulu", "Nami"],
+            }
+        },
+        "Braum": {
+            roles: {
+                "Support": ["Janna", "Lulu", "Nami"],
+            }
+        },
+        "Caitlyn": {
+            roles: {
+                "Bot": ["Draven", "Jhin", "Lucian"],
+            }
+        },
+        "Camille": {
+            roles: {
+                "Top": ["Nasus", "Renekton", "Jax"],
+            }
+        },
+        "Cassiopeia": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Cho'Gath": {
+            roles: {
+                "Top": ["Teemo", "Kayle", "Renekton"],
+            }
+        },
+        "Darius": {
+            roles: {
+                "Top": ["Teemo", "Gnar", "Kayle"],
+            }
+        },
+        "Diana": {
+            roles: {
+                "Jungle": ["Warwick", "Kha'Zix", "Elise"],
+            }
+        },
+        "Dr. Mundo": {
+            roles: {
+                "Top": ["Teemo", "Kayle", "Trundle"],
+            }
+        },
+        "Draven": {
+            roles: {
+                "Bot": ["Miss Fortune", "Jhin", "Lucian"],
+            }
+        },
+        "Ekko": {
+            roles: {
+                "Mid": ["Zed", "Talon", "Fizz"],
+            }
+        },
+        "Elise": {
+            roles: {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+            }
+        },
+        "Evelynn": {
+            roles: {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+            }
+        },
+        "Aatrox": {
+            "roles": {
+                "Top": ["Teemo", "Quinn", "Vayne"],
+        }
+        },
+        "Ahri": {
+            "roles": {
+                "Mid": ["Zed", "Fizz", "Malzahar"],
+        }
+        },
+        "Akali": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Alistar": {
+            "roles": {
+                "Support": ["Thresh", "Leona", "Blitzcrank"],
+        }
+        },
+        "Amumu": {
+            "roles": {
+                "Jungle": ["Warwick", "Nunu", "Rammus"],
+        }
+        },
+        "Anivia": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Ashe": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Aurelion Sol": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Bard": {
+            "roles": {
+                "Support": ["Janna", "Lulu", "Nami"],
+        }
+        },
+        "Blitzcrank": {
+            "roles": {
+                "Support": ["Leona", "Alistar", "Thresh"],
+        }
+        },
+        "Brand": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Braum": {
+            "roles": {
+                "Support": ["Leona", "Thresh", "Alistar"],
+        }
+        },
+        "Caitlyn": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Camille": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Cassiopeia": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Chogath": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Corki": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Darius": {
+            "roles": {
+                "Top": ["Teemo", "Quinn", "Vayne"],
+        }
+        },
+        "Dr. Mundo": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Ekko": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Elise": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Evelynn": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Fiora": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Fizz": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Galio": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Gangplank": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Garen": {
+            "roles": {
+                "Top": ["Teemo", "Quinn", "Vayne"],
+        }
+        },
+        "Gragas": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Graves": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Hecarim": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Illaoi": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Irelia": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Janna": {
+            "roles": {
+                "Support": ["Bard", "Lulu", "Nami"],
+        }
+        },
+        "Jarvan IV": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Jhin": {
+            "roles": {
+                "Bot": ["Caitlyn", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Jinx": {
+            "roles": {
+                "Bot": ["Caitlyn", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Kai'sa": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Karthus": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Kassadin": {
+            "roles": {
+                "Mid": ["Zed", "LeBlanc", "Ahri"],
+        }
+        },
+        "Katarina": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Kayle": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Kennen": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Kha'Zix": {
+            "roles": {
+                "Jungle": ["Warwick", "Elise", "Nidalee"],
+        }
+        },
+        "Kled": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "LeBlanc": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "Ahri"],
+        }
+        },
+        "Lee Sin": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Leona": {
+            "roles": {
+                "Support": ["Thresh", "Braum", "Alistar"],
+        }
+        },
+        "Lillia": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Lissandra": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Lucian": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Lulu": {
+            "roles": {
+                "Support": ["Janna", "Bard", "Nami"],
+        }
+        },
+        "Lux": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Malphite": {
+            "roles": {
+                "Top": ["Teemo", "Aatrox", "Quinn"],
+        }
+        },
+        "Malzahar": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Miss Fortune": {
+            "roles": {
+                "Bot": ["Jhin", "Caitlyn", "Ezreal"],
+        }
+        },
+        "Mordekaiser": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Nunu and Willump": {
+            "roles": {
+                "Jungle": ["Bel'Veth", "Ekko", "Master Yi" , "Elise"],
+        }
+        },
+        "Nami": {
+            "roles": {
+                "Support": ["Janna", "Lulu", "Bard"],
+        }
+        },
+        "Nasus": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Nautilus": {
+            "roles": {
+                "Support": ["Leona", "Alistar", "Braum"],
+        }
+        },
+        "Neeko": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Nidalee": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Elise"],
+        }
+        },
+        "Nocturne": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Olaf": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Orianna": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Pantheon": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Poppy": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Pyke": {
+            "roles": {
+                "Support": ["Thresh", "Alistar", "Braum"],
+        }
+        },
+        "Qiyana": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Rakan": {
+            "roles": {
+                "Support": ["Leona", "Alistar", "Braum"],
+        }
+        },
+        "Rammus": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Rek'Sai": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Renekton": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Riven": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Rumble": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Ryze": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Sejuani": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Senna": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Seraphine": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Shaco": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Shen": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Singed": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Cho'Gath"],
+        }
+        },
+        "Sion": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Sivir": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Skarner": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Sona": {
+            "roles": {
+                "Support": ["Janna", "Bard", "Lulu"],
+        }
+        },
+        "Swain": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Sylas": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Tahm Kench": {
+            "roles": {
+                "Support": ["Leona", "Alistar", "Braum"],
+        }
+        },
+        "Taliyah": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Taric": {
+            "roles": {
+                "Support": ["Leona", "Braum", "Nautilus"],
+        }
+        },
+        "Teemo": {
+            "roles": {
+                "Top": ["Aatrox", "Renekton", "Garen"],
+        }
+        },
+        "Thresh": {
+            "roles": {
+                "Support": ["Leona", "Alistar", "Braum"],
+        }
+        },
+        "Tristana": {
+            "roles": {
+                "Bot": ["Caitlyn", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Trundle": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Tryndamere": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Twisted Fate": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Twitch": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Udyr": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Urgot": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Varus": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Vayne": {
+            "roles": {
+                "Bot": ["Teemo", "Quinn", "Tristana"],
+        }
+        },
+        "Veigar": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Vel'Koz": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Viego": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Vladimir": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Warwick": {
+            "roles": {
+                "Jungle": ["Kha'Zix", "Nidalee", "Rammus"],
+        }
+        },
+        "Wukong": {
+            "roles": {
+                "Top": ["Teemo", "Malphite", "Aatrox"],
+        }
+        },
+        "Xayah": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+        }
+        },
+        "Yasuo": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Yone": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Zac": {
+            "roles": {
+                "Jungle": ["Warwick", "Kha'Zix", "Nidalee"],
+        }
+        },
+        "Zed": {
+            "roles": {
+                "Mid": ["Zed", "Kassadin", "LeBlanc"],
+        }
+        },
+        "Zeri": {
+            "roles": {
+                "Bot": ["Jhin", "Miss Fortune", "Ezreal"],
+                }
+            },
+        };
+
+    // Show search recommendations
+    function showRecommendations() {
+        const input = document.getElementById('champion-input').value.trim().toLowerCase();
+        const recommendationsDiv = document.getElementById('recommendations');
+        recommendationsDiv.innerHTML = "";
+
+        if (input.length > 0) {
+            const suggestions = allChampions.filter(champ =>
+                champ.name.toLowerCase().includes(input) || champ.shortcuts.some(shortcut => shortcut.toLowerCase().includes(input))
+            );
+
+            if (suggestions.length > 0) {
+                suggestions.forEach(suggestedChampion => {
+                    const suggestion = document.createElement("div");
+                    suggestion.textContent = suggestedChampion.name;
+                    suggestion.onclick = function () {
+                        document.getElementById('champion-input').value = suggestedChampion.name;
+                        getCounters();
+                    };
+                    recommendationsDiv.appendChild(suggestion);
+                });
+            }
+        }
+    }
+
+    // Get counters for the selected champion
+    function getCounters() {
+        const input = document.getElementById('champion-input').value.trim().toLowerCase();
+        const countersDiv = document.getElementById('counters');
+
+        if (!input) {
+            countersDiv.innerHTML = "<p>Please enter a champion name or shortcut.</p>";
+            return;
+        }
+
+        let foundChampion = null;
+        let foundRoleCounters = null;
+
+        for (const champion in countersData) {
+            const data = countersData[champion];
+            if (champion.toLowerCase() === input ||
+                allChampions.some(champ => champ.shortcuts.includes(input) && champ.name.toLowerCase() === champion.toLowerCase())) {
+                foundChampion = champion;
+                foundRoleCounters = data.roles;
+                break;
+            }
+        }
+
+        if (foundChampion) {
+            let resultHTML = `<h2>Counters for ${foundChampion}</h2>`;
+            for (const role in foundRoleCounters) {
+                resultHTML += `<div><strong>${role}:</strong> ${foundRoleCounters[role].join(', ')}</div>`;
+            }
+            countersDiv.innerHTML = resultHTML;
+        } else {
+            countersDiv.innerHTML = `<p>No counters found for <strong>${input}</strong>. Try another champion or shortcut.</p>`;
+        }
+    }
+</script>
+</body>
+
+</html>
