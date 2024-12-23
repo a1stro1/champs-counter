@@ -12,7 +12,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
-const likesRef = db.ref('likes');
+const likesRef = db.ref('likes'); // Reference to 'likes' node in the database
 
 // Get the like button and like count display
 const likeButton = document.getElementById('like-button');
@@ -37,7 +37,7 @@ likesRef.on('value', (snapshot) => {
   }
 });
 
-// Add event listener to the like button
+// Add event listener for the like button
 likeButton.addEventListener('click', () => {
   likesRef.once('value', (snapshot) => {
     const data = snapshot.val() || { count: 0 };
@@ -57,6 +57,6 @@ likeButton.addEventListener('click', () => {
 
     // Save the user's like status locally and update Firebase
     localStorage.setItem('userLiked', userLiked);
-    likesRef.set({ count: newCount });
+    likesRef.set({ count: newCount }); // Update the count in Firebase
   });
 });
