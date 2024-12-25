@@ -47,6 +47,11 @@ body {
   border-color: #000;
 }
 
+.liked {
+  background-color: black;
+  color: white;
+}
+
 /* Footer styling */
 footer {
   background-color: #222;
