@@ -4,7 +4,7 @@ const firebaseConfig = {
   authDomain: "champ-counter.firebaseapp.com",
   projectId: "champ-counter",
   databaseURL: "https://champ-counter-default-rtdb.firebaseio.com",
-  storageBucket: "champ-counter.firebasestorage.app",
+  storageBucket: "champ-counter.appspot.com",
   messagingSenderId: "280928553583",
   appId: "1:280928553583:web:3532d82486f87387cb5b9a"
 };
@@ -12,34 +12,45 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
-const likesRef = db.ref('likes'); // Reference to the global likes count
-const userLikesRef = db.ref('userLikes'); // Reference to track user-specific likes
+const likesRef = db.ref('likes');
+const userLikesRef = db.ref('userLikes');
 
-// HTML Elements
+// Get elements
 const likeButton = document.getElementById('like-button');
 const likeCountDisplay = document.getElementById('like-count');
 
-// Get unique user ID (use a placeholder for demo purposes)
-const userId = localStorage.getItem('userId') || `user_${Date.now()}`;
-localStorage.setItem('userId', userId);
+// Unique user identifier (e.g., session ID, user ID from auth)
+const userId = `user_${Math.random().toString(36).substring(2, 15)}`;
 
-// Variables to store data
-let userLiked = false; // Track if the current user has liked
-let globalLikes = 0; // Track the total number of likes
+// Track user's like status
+let userLiked = false;
 
-// Fetch global likes count
+// Fetch and update the like count
 likesRef.on('value', (snapshot) => {
-  globalLikes = snapshot.val() || 0;
-  likeCountDisplay.textContent = globalLikes; // Update the displayed likes
+  const likeCount = snapshot.val() || 0;
+  likeCountDisplay.textContent = likeCount;
 });
 
-// Fetch user-specific like status
+// Check if the user already liked
 userLikesRef.child(userId).on('value', (snapshot) => {
   userLiked = snapshot.val() || false;
-  updateLikeButtonUI(); // Update button UI based on the user's like status
+  updateLikeButtonUI();
 });
 
-// Update the like button UI
+// Handle like button click
+likeButton.addEventListener('click', () => {
+  if (userLiked) {
+    // Unlike
+    likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
+    userLikesRef.child(userId).set(false);
+  } else {
+    // Like
+    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
+    userLikesRef.child(userId).set(true);
+  }
+});
+
+// Update the like button appearance
 function updateLikeButtonUI() {
   if (userLiked) {
     likeButton.classList.add('liked');
@@ -49,80 +60,3 @@ function updateLikeButtonUI() {
     likeButton.textContent = 'Like';
   }
 }
-
-// Handle like button click
-likeButton.addEventListener('click', () => {
-  if (userLiked) {
-    // Unlike the post
-    likesRef.transaction((currentLikes) => Math.max((currentLikes || 0) - 1, 0));
-    userLikesRef.child(userId).set(false); // Update user-specific like status
-  } else {
-    // Like the post
-    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
-    userLikesRef.child(userId).set(true); // Update user-specific like status
-  }
-});
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAukFEfT1jZfW0fOIDCeLCgdgBaakDz40k",
-  authDomain: "champ-counter.firebaseapp.com",
-  projectId: "champ-counter",
-  databaseURL: "https://champ-counter-default-rtdb.firebaseio.com",
-  storageBucket: "champ-counter.firebasestorage.app",
-  messagingSenderId: "280928553583",
-  appId: "1:280928553583:web:3532d82486f87387cb5b9a"
-};
-
-// Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database(app);
-const likesRef = db.ref('likes'); // Reference to the global likes count
-const userLikesRef = db.ref('userLikes'); // Reference to track user-specific likes
-
-// HTML Elements
-const likeButton = document.getElementById('like-button');
-const likeCountDisplay = document.getElementById('like-count');
-
-// Get unique user ID (use a placeholder for demo purposes)
-const userId = localStorage.getItem('userId') || `user_${Date.now()}`;
-localStorage.setItem('userId', userId);
-
-// Variables to store data
-let userLiked = false; // Track if the current user has liked
-let globalLikes = 0; // Track the total number of likes
-
-// Fetch global likes count
-likesRef.on('value', (snapshot) => {
-  globalLikes = snapshot.val() || 0;
-  likeCountDisplay.textContent = globalLikes; // Update the displayed likes
-});
-
-// Fetch user-specific like status
-userLikesRef.child(userId).on('value', (snapshot) => {
-  userLiked = snapshot.val() || false;
-  updateLikeButtonUI(); // Update button UI based on the user's like status
-});
-
-// Update the like button UI
-function updateLikeButtonUI() {
-  if (userLiked) {
-    likeButton.classList.add('liked');
-    likeButton.textContent = 'Unlike';
-  } else {
-    likeButton.classList.remove('liked');
-    likeButton.textContent = 'Like';
-  }
-}
-
-// Handle like button click
-likeButton.addEventListener('click', () => {
-  if (userLiked) {
-    // Unlike the post
-    likesRef.transaction((currentLikes) => Math.max((currentLikes || 0) - 1, 0));
-    userLikesRef.child(userId).set(false); // Update user-specific like status
-  } else {
-    // Like the post
-    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
-    userLikesRef.child(userId).set(true); // Update user-specific like status
-  }
-});
