@@ -13,23 +13,28 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
 const likesRef = db.ref('likes'); // Reference to 'likes' node in the database
+const userLikedRef = db.ref('userLikes'); // Reference to 'userLikes' node
 
 // Get the like button and like count display
 const likeButton = document.getElementById('like-button');
 const likeCountDisplay = document.getElementById('like-count');
 
-// Track if the user has liked
-let userLiked = localStorage.getItem('userLiked') === 'true';
+// Generate a unique user ID for this session (or retrieve existing one)
+let userId = localStorage.getItem('userId');
+if (!userId) {
+  userId = `user_${Math.random().toString(36).substr(2, 9)}`;
+  localStorage.setItem('userId', userId);
+}
 
-// Fetch initial like count from Firebase
+// Fetch initial like count and user like state
 likesRef.on('value', (snapshot) => {
   const data = snapshot.val() || { count: 0 };
   const likeCount = data.count;
-
-  // Update the like count display
   likeCountDisplay.textContent = likeCount;
+});
 
-  // Set the button's appearance based on the user's like status
+userLikedRef.child(userId).on('value', (snapshot) => {
+  const userLiked = snapshot.val();
   if (userLiked) {
     likeButton.classList.add('liked');
   } else {
@@ -41,24 +46,25 @@ likesRef.on('value', (snapshot) => {
 likeButton.addEventListener('click', () => {
   likesRef.once('value', (snapshot) => {
     const data = snapshot.val() || { count: 0 };
-    let newCount = data.count;
+    let likeCount = data.count;
 
-    if (userLiked) {
-      // Unlike the post
-      likeButton.classList.remove('liked');
-      newCount--;
-      userLiked = false;
-    } else {
-      // Like the post
-      likeButton.classList.add('liked');
-      newCount++;
-      userLiked = true;
-    }
+    userLikedRef.child(userId).once('value', (userSnapshot) => {
+      const userLiked = userSnapshot.val();
 
-    // Save the user's like status locally
-    localStorage.setItem('userLiked', userLiked);
+      if (userLiked) {
+        // Unlike the post
+        likeButton.classList.remove('liked');
+        likeCount--;
+        userLikedRef.child(userId).set(false); // Update user like state
+      } else {
+        // Like the post
+        likeButton.classList.add('liked');
+        likeCount++;
+        userLikedRef.child(userId).set(true); // Update user like state
+      }
 
-    // Update the count in Firebase
-    likesRef.set({ count: newCount });
+      // Update the like count in Firebase
+      likesRef.set({ count: likeCount });
+    });
   });
 });
