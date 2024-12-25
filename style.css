@@ -11,27 +11,16 @@ body {
   padding: 20px;
 }
 
-/* Search bar and like button container */
-.top-container {
+/* Like button and other elements at the top */
+.like-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.search-bar {
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-  width: 300px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  gap: 20px;
+  margin-bottom: auto;
 }
 
 .like-button {
-  display: flex;
-  align-items: center;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
