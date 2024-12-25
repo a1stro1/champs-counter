@@ -12,10 +12,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
-const likesRef = db.ref('likes'); // Reference to the total likes
-const userLikesRef = db.ref('userLikes'); // Reference to individual user likes
+const likesRef = db.ref('likes'); // Reference for total likes
+const userLikesRef = db.ref('userLikes'); // Reference for individual user likes
 
-// Get like button and like count display elements
+// Get like button and display elements
 const likeButton = document.getElementById('like-button');
 const likeCountDisplay = document.getElementById('like-count');
 
@@ -26,18 +26,19 @@ if (!userId) {
   localStorage.setItem('userId', userId);
 }
 
-// Fetch the total likes count and user status
+// Listen for changes to the global like count
 likesRef.on('value', (snapshot) => {
   const likeCount = snapshot.val() || 0;
   likeCountDisplay.textContent = likeCount;
 });
 
+// Listen for changes to the user's like status
 userLikesRef.child(userId).on('value', (snapshot) => {
   const userLiked = snapshot.val() || false;
   updateButtonState(userLiked);
 });
 
-// Add click event listener for toggling like
+// Like button toggle logic
 likeButton.addEventListener('click', () => {
   userLikesRef.child(userId).once('value', (snapshot) => {
     const userLiked = snapshot.val() || false;
@@ -56,13 +57,15 @@ likeButton.addEventListener('click', () => {
   });
 });
 
-// Update the like button's style
+// Update the button style
 function updateButtonState(isLiked) {
   if (isLiked) {
     likeButton.style.backgroundColor = "black";
     likeButton.style.color = "white";
+    likeButton.textContent = "Unlike";
   } else {
     likeButton.style.backgroundColor = "white";
     likeButton.style.color = "black";
+    likeButton.textContent = "Like";
   }
 }
