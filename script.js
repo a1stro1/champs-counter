@@ -35,9 +35,11 @@ likesRef.on('value', (snapshot) => {
 userLikedRef.child(userId).on('value', (snapshot) => {
   const userLiked = snapshot.val();
   if (userLiked) {
-    likeButton.classList.add('liked');
+    likeButton.style.backgroundColor = "black";
+    likeButton.style.color = "white";
   } else {
-    likeButton.classList.remove('liked');
+    likeButton.style.backgroundColor = "white";
+    likeButton.style.color = "black";
   }
 });
 
@@ -48,12 +50,14 @@ likeButton.addEventListener('click', () => {
 
     if (userLiked) {
       // Unlike the post
-      likeButton.classList.remove('liked');
+      likeButton.style.backgroundColor = "white";
+      likeButton.style.color = "black";
       likesRef.transaction((currentCount) => (currentCount || 0) - 1); // Decrement the count
       userLikedRef.child(userId).set(false); // Update user like state
     } else {
       // Like the post
-      likeButton.classList.add('liked');
+      likeButton.style.backgroundColor = "black";
+      likeButton.style.color = "white";
       likesRef.transaction((currentCount) => (currentCount || 0) + 1); // Increment the count
       userLikedRef.child(userId).set(true); // Update user like state
     }
