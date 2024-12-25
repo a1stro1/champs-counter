@@ -19,7 +19,7 @@ const likeButton = document.getElementById('like-button');
 const likeCountDisplay = document.getElementById('like-count');
 
 // Track if the user has liked
-let userLiked = localStorage.getItem('userLiked') === 'true' || false;
+let userLiked = localStorage.getItem('userLiked') === 'true';
 
 // Fetch initial like count from Firebase
 likesRef.on('value', (snapshot) => {
@@ -29,7 +29,7 @@ likesRef.on('value', (snapshot) => {
   // Update the like count display
   likeCountDisplay.textContent = likeCount;
 
-  // Update the button UI based on the user's like status
+  // Set the button's appearance based on the user's like status
   if (userLiked) {
     likeButton.classList.add('liked');
   } else {
@@ -39,22 +39,26 @@ likesRef.on('value', (snapshot) => {
 
 // Add event listener for the like button
 likeButton.addEventListener('click', () => {
-  likesRef.transaction((currentData) => {
-    if (currentData) {
-      if (userLiked) {
-        // Unlike the post
-        userLiked = false;
-        localStorage.setItem('userLiked', 'false');
-        likeButton.classList.remove('liked');
-        return { count: currentData.count - 1 };
-      } else {
-        // Like the post
-        userLiked = true;
-        localStorage.setItem('userLiked', 'true');
-        likeButton.classList.add('liked');
-        return { count: currentData.count + 1 };
-      }
+  likesRef.once('value', (snapshot) => {
+    const data = snapshot.val() || { count: 0 };
+    let newCount = data.count;
+
+    if (userLiked) {
+      // Unlike the post
+      likeButton.classList.remove('liked');
+      newCount--;
+      userLiked = false;
+    } else {
+      // Like the post
+      likeButton.classList.add('liked');
+      newCount++;
+      userLiked = true;
     }
-    return currentData;
+
+    // Save the user's like status locally
+    localStorage.setItem('userLiked', userLiked);
+
+    // Update the count in Firebase
+    likesRef.set({ count: newCount });
   });
 });
