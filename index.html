@@ -110,6 +110,7 @@
   <header>
     <h1>League of Legends Counters</h1>
   </header>
+   <link rel="icon" href="favicon-32x32.png" type="image/png">
   <div class="search-container">
     <input type="text" id="champion-input" placeholder="Enter champion name or shortcut..." onkeyup="showRecommendations()">
     <button onclick="getCounters()">Search</button>
@@ -123,18 +124,18 @@
       <span class="like-icon">👍</span> Like
     </button>
     <p>Likes: <span id="like-count">0</span></p>
-    <link rel="icon" href="favicon-32x32.png" type="image/png">
+  </div>
+  <footer>
+    <p>Made by Abdo</p>
+  </footer>
     <!-- Firebase SDK (Browser-Friendly CDN Version) -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database-compat.js"></script>
 
   <!-- Link to External JavaScript File -->
   <script src="script.js"></script>
-
-  </div>
-  <footer>
-    <p>Made by Abdo</p>
-  </footer>
+</body>
+</html>
   <script>
     const countersData = {
         "Aurora": {
