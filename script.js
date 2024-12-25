@@ -12,60 +12,52 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
-const likesRef = db.ref('likes'); // Reference for total likes
-const userLikesRef = db.ref('userLikes'); // Reference for individual user likes
+const likesRef = db.ref('likes'); // Reference to the total likes
+const userLikesRef = db.ref('userLikes'); // Reference to track user likes
 
-// Get like button and display elements
+// HTML Elements
 const likeButton = document.getElementById('like-button');
 const likeCountDisplay = document.getElementById('like-count');
 
-// Generate or retrieve a unique user ID
-let userId = localStorage.getItem('userId');
-if (!userId) {
-  userId = `user_${Math.random().toString(36).substr(2, 9)}`;
-  localStorage.setItem('userId', userId);
-}
+// Get unique user ID (use a placeholder for demo purposes)
+const userId = localStorage.getItem('userId') || `user_${Date.now()}`;
+localStorage.setItem('userId', userId);
 
-// Listen for changes to the global like count
+// Track user like status and global likes
+let userLiked = false;
+let globalLikes = 0;
+
+// Fetch initial data
 likesRef.on('value', (snapshot) => {
-  const likeCount = snapshot.val() || 0;
-  likeCountDisplay.textContent = likeCount;
+  globalLikes = snapshot.val() || 0;
+  likeCountDisplay.textContent = globalLikes;
 });
 
-// Listen for changes to the user's like status
 userLikesRef.child(userId).on('value', (snapshot) => {
-  const userLiked = snapshot.val() || false;
-  updateButtonState(userLiked);
+  userLiked = snapshot.val() || false;
+  updateLikeButtonUI();
 });
 
-// Like button toggle logic
-likeButton.addEventListener('click', () => {
-  userLikesRef.child(userId).once('value', (snapshot) => {
-    const userLiked = snapshot.val() || false;
-
-    if (userLiked) {
-      // User unlikes the post
-      likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
-      userLikesRef.child(userId).set(false);
-      updateButtonState(false);
-    } else {
-      // User likes the post
-      likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
-      userLikesRef.child(userId).set(true);
-      updateButtonState(true);
-    }
-  });
-});
-
-// Update the button style
-function updateButtonState(isLiked) {
-  if (isLiked) {
-    likeButton.style.backgroundColor = "black";
-    likeButton.style.color = "white";
-    likeButton.textContent = "Unlike";
+// Update UI based on like status
+function updateLikeButtonUI() {
+  if (userLiked) {
+    likeButton.classList.add('liked');
+    likeButton.textContent = 'Unlike';
   } else {
-    likeButton.style.backgroundColor = "white";
-    likeButton.style.color = "black";
-    likeButton.textContent = "Like";
+    likeButton.classList.remove('liked');
+    likeButton.textContent = 'Like';
   }
 }
+
+// Handle like button click
+likeButton.addEventListener('click', () => {
+  if (userLiked) {
+    // User wants to unlike
+    likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
+    userLikesRef.child(userId).set(false);
+  } else {
+    // User wants to like
+    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
+    userLikesRef.child(userId).set(true);
+  }
+});
