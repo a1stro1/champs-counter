@@ -2,27 +2,38 @@
 body {
   font-family: 'Roboto', Arial, sans-serif;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  justify-content: space-between;
   height: 100vh;
   margin: 0;
   background: linear-gradient(135deg, #e0e0e0, #f4f4f4);
   color: #333;
-}
-
-/* Like button container */
-.like-container {
-  text-align: center;
   padding: 20px;
 }
 
-/* Style for the Like button */
+/* Search bar and like button container */
+.top-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .like-button {
   display: flex;
   align-items: center;
-  padding: 12px 24px;
-  font-size: 18px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
   border: 2px solid #333;
   border-radius: 30px;
@@ -41,7 +52,6 @@ body {
   margin-right: 10px;
 }
 
-/* Liked button style */
 .like-button.liked {
   background-color: #000;
   color: #fff;
@@ -50,17 +60,9 @@ body {
 
 /* Footer styling */
 footer {
-  margin-top: 30px;
-  font-size: 14px;
+  background-color: #222;
+  color: #fff;
   text-align: center;
-  color: #777;
-  font-style: italic;
-}
-
-/* Like count styling */
-#like-count {
-  font-weight: bold;
-  font-size: 16px;
-  color: #555;
-  margin-top: 10px;
+  padding: 10px 0;
+  font-size: 14px;
 }
