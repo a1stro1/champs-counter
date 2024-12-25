@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database(app);
 const likesRef = db.ref('likes'); // Reference to the total likes
-const userLikedRef = db.ref('userLikes'); // Reference to individual user likes
+const userLikesRef = db.ref('userLikes'); // Reference to individual user likes
 
 // Get like button and like count display elements
 const likeButton = document.getElementById('like-button');
@@ -26,37 +26,37 @@ if (!userId) {
   localStorage.setItem('userId', userId);
 }
 
-// Update UI based on Firebase data
+// Fetch the total likes count and user status
 likesRef.on('value', (snapshot) => {
   const likeCount = snapshot.val() || 0;
   likeCountDisplay.textContent = likeCount;
 });
 
-userLikedRef.child(userId).on('value', (snapshot) => {
+userLikesRef.child(userId).on('value', (snapshot) => {
   const userLiked = snapshot.val() || false;
   updateButtonState(userLiked);
 });
 
-// Toggle like state
+// Add click event listener for toggling like
 likeButton.addEventListener('click', () => {
-  userLikedRef.child(userId).once('value', (snapshot) => {
+  userLikesRef.child(userId).once('value', (snapshot) => {
     const userLiked = snapshot.val() || false;
 
     if (userLiked) {
       // User unlikes the post
       likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
-      userLikedRef.child(userId).set(false);
+      userLikesRef.child(userId).set(false);
       updateButtonState(false);
     } else {
       // User likes the post
       likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
-      userLikedRef.child(userId).set(true);
+      userLikesRef.child(userId).set(true);
       updateButtonState(true);
     }
   });
 });
 
-// Update button style based on like state
+// Update the like button's style
 function updateButtonState(isLiked) {
   if (isLiked) {
     likeButton.style.backgroundColor = "black";
