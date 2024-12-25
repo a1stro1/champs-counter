@@ -28,8 +28,7 @@ if (!userId) {
 
 // Fetch initial like count and user like state
 likesRef.on('value', (snapshot) => {
-  const data = snapshot.val() || { count: 0 };
-  const likeCount = data.count;
+  const likeCount = snapshot.val() || 0;
   likeCountDisplay.textContent = likeCount;
 });
 
@@ -44,27 +43,19 @@ userLikedRef.child(userId).on('value', (snapshot) => {
 
 // Add event listener for the like button
 likeButton.addEventListener('click', () => {
-  likesRef.once('value', (snapshot) => {
-    const data = snapshot.val() || { count: 0 };
-    let likeCount = data.count;
+  userLikedRef.child(userId).once('value', (userSnapshot) => {
+    const userLiked = userSnapshot.val();
 
-    userLikedRef.child(userId).once('value', (userSnapshot) => {
-      const userLiked = userSnapshot.val();
-
-      if (userLiked) {
-        // Unlike the post
-        likeButton.classList.remove('liked');
-        likeCount--;
-        userLikedRef.child(userId).set(false); // Update user like state
-      } else {
-        // Like the post
-        likeButton.classList.add('liked');
-        likeCount++;
-        userLikedRef.child(userId).set(true); // Update user like state
-      }
-
-      // Update the like count in Firebase
-      likesRef.set({ count: likeCount });
-    });
+    if (userLiked) {
+      // Unlike the post
+      likeButton.classList.remove('liked');
+      likesRef.transaction((currentCount) => (currentCount || 0) - 1); // Decrement the count
+      userLikedRef.child(userId).set(false); // Update user like state
+    } else {
+      // Like the post
+      likeButton.classList.add('liked');
+      likesRef.transaction((currentCount) => (currentCount || 0) + 1); // Increment the count
+      userLikedRef.child(userId).set(true); // Update user like state
+    }
   });
 });
