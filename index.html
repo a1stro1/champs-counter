@@ -86,17 +86,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Like Button Container -->
-  <div class="top-container">
-  <input type="text" class="search-bar" placeholder="Search...">
-  <button class="like-button">
-    <span class="like-icon">❤️</span> Like
-  </button>
-</div>
+   <!-- Like Button Container -->
+  <div class="like-container">
+    <button class="like-button" id="like-button">
+      <span class="like-icon">👍</span> Like
+    </button>
+    <p>Likes: <span id="like-count">0</span></p>
+  </div>
 
-<footer>
-  Made By Abdo
-</footer>
+  <!-- Footer -->
+  <footer>
+    <p>Made by Abdo</p>
+  </footer>
 
   <!-- Firebase SDK (Browser-Friendly CDN Version) -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
