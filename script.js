@@ -10,53 +10,59 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database(app);
-const likesRef = db.ref('likes');
-const userLikesRef = db.ref('userLikes');
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const likesRef = db.ref("likes");
+const userLikesRef = db.ref("userLikes");
 
-// Get elements
-const likeButton = document.getElementById('like-button');
-const likeCountDisplay = document.getElementById('like-count');
+// Get HTML elements
+const likeButton = document.getElementById("like-button");
+const likeCountDisplay = document.getElementById("like-count");
 
-// Unique user identifier (e.g., session ID, user ID from auth)
-const userId = `user_${Math.random().toString(36).substring(2, 15)}`;
+// User's unique ID
+const userID = `user_${Math.random().toString(36).substr(2, 9)}`;
+console.log("User ID:", userID);
 
 // Track user's like status
 let userLiked = false;
 
-// Fetch and update the like count
-likesRef.on('value', (snapshot) => {
+// Fetch initial data from Firebase
+likesRef.on("value", (snapshot) => {
   const likeCount = snapshot.val() || 0;
   likeCountDisplay.textContent = likeCount;
+  console.log("Likes count updated:", likeCount);
 });
 
-// Check if the user already liked
-userLikesRef.child(userId).on('value', (snapshot) => {
+userLikesRef.child(userID).on("value", (snapshot) => {
   userLiked = snapshot.val() || false;
   updateLikeButtonUI();
+  console.log(`User ${userID} liked status:`, userLiked);
 });
 
-// Handle like button click
-likeButton.addEventListener('click', () => {
-  if (userLiked) {
-    // Unlike
-    likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
-    userLikesRef.child(userId).set(false);
-  } else {
-    // Like
-    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
-    userLikesRef.child(userId).set(true);
-  }
-});
-
-// Update the like button appearance
+// Update button appearance based on like status
 function updateLikeButtonUI() {
   if (userLiked) {
-    likeButton.classList.add('liked');
-    likeButton.textContent = 'Unlike';
+    likeButton.classList.add("liked");
+    likeButton.textContent = "Unlike";
   } else {
-    likeButton.classList.remove('liked');
-    likeButton.textContent = 'Like';
+    likeButton.classList.remove("liked");
+    likeButton.textContent = "Like";
   }
 }
+
+// Handle like button click
+likeButton.addEventListener("click", () => {
+  if (userLiked) {
+    // User unlikes
+    likesRef.transaction((currentLikes) => (currentLikes || 0) - 1);
+    userLikesRef.child(userID).set(false);
+    userLiked = false;
+  } else {
+    // User likes
+    likesRef.transaction((currentLikes) => (currentLikes || 0) + 1);
+    userLikesRef.child(userID).set(true);
+    userLiked = true;
+  }
+  updateLikeButtonUI();
+  console.log(`User ${userID} clicked. Liked: ${userLiked}`);
+});
